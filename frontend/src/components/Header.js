@@ -1,5 +1,5 @@
 import React from 'react'
-//rfce
+//rfce react functions components export
 function Header() {
     return (
         <div>
