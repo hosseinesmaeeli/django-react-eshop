@@ -21,7 +21,7 @@ const products = [
     'brand': 'Micrisoft',
     'category': 'Electronics',
     'price': 708.88,
-    'countInStock': 7,
+    'countInStock': 0,
     'rating': 4.9,
     'numReviews': 8245,
   },
