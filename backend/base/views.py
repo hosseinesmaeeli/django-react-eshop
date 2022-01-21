@@ -21,10 +21,19 @@ routes =[
 
 
 # Create your views here.
-@api_view(http_method_names=['GET'])
+@api_view(['GET'])
 def getRoutes(request):
     return Response(routes)
 
-@api_view(http_method_names=['GET'])
+@api_view(['GET'])
 def getProducts(request):
     return Response(products)
+
+
+@api_view(['GET'])
+def getProduct(request,pk):
+    product= None
+    for i in products:
+        product=i
+        break
+    return Response(product)
