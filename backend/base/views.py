@@ -34,6 +34,7 @@ def getProducts(request):
 def getProduct(request,pk):
     product= None
     for i in products:
-        product=i
-        break
+        if i['_id']==pk :
+            product=i
+            break
     return Response(product)

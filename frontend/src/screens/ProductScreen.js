@@ -1,13 +1,23 @@
-import React from "react";
-import products from "../products";
+import React, { useState, useEffect } from "react";
+// import products from "../products";
 import Rating from "../components/Rating";
 import { useParams, Link } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Button } from "react-bootstrap";
+import axios from "axios";
 
 function ProductScreen() {
-  // const product = products.find((p) => p._id === match.params.id);
+  const [product, setProduct] = useState([]);
+  useEffect(() => {
+    async function fetchProduct() {
+      const { data } = await axios.get(
+        `http://127.0.0.1:8000/api/v1/products/${id}`
+      );
+      setProduct(data);
+    }
+    fetchProduct();
+  }, []);
   const { id } = useParams();
-  const product = products.find((p) => p._id === id);
+  // const product = products.find((p) => p._id === id);
   return (
     <div>
       <Link to={"/"} className="btn btn-light my-3">
@@ -62,10 +72,10 @@ function ProductScreen() {
       </Row>
       <Row>
         <Col>
-       <strong>Description:</strong>{product.description}
-       </Col>
+          <strong>Description:</strong>
+          {product.description}
+        </Col>
       </Row>
-
     </div>
   );
 }
