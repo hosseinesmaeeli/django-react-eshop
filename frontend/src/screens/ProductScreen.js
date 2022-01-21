@@ -10,7 +10,7 @@ function ProductScreen() {
   useEffect(() => {
     async function fetchProduct() {
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/api/v1/products/${id}`
+        `/api/v1/products/${id}`
       );
       setProduct(data);
     }
