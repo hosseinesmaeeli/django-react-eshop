@@ -116,7 +116,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
 *.pyc
 #db.sqlite3
 
@@ -149,3 +148,7 @@ local_settings.py
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.pyc
+*.pyc
+backend/backend/__pycache__/settings.cpython-310.pyc
+*.pyc
