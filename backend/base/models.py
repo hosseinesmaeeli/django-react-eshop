@@ -18,6 +18,11 @@ class Product(models.Model):
     countInStock = models.IntegerField(null=True, blank=True, default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
+
+
 
 class Review(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
@@ -27,6 +32,10 @@ class Review(models.Model):
     rating = models.IntegerField(null=True, blank=True, default=0)
     comment = models.TextField(null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+
+    
+    def __str__(self):
+        return str(self.rating)
 
 
 class Order(models.Model):
@@ -46,6 +55,9 @@ class Order(models.Model):
         auto_now_add=False, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return str(self.createdAt)   
+
 
 class OrderItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
@@ -57,6 +69,8 @@ class OrderItem(models.Model):
         max_digits=9, decimal_places=2, null=True, blank=True)
     image = models.CharField(max_length=200, null=True, blank=True)
 
+    def __str__(self):
+        return str(self.name)
 
 class ShippingAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
@@ -68,3 +82,6 @@ class ShippingAddress(models.Model):
     country = models.CharField(max_length=200, null=True, blank=True)
     shippingPrice = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.address)
