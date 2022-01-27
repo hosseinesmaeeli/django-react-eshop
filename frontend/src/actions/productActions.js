@@ -5,7 +5,7 @@ import {
 } from "../constants/productConstants";
 import axios from "axios";
 
-const listProduct = () => async (dispatch) => {
+export const fetchProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
     const { data } = await axios.get("/api/v1/products/");
