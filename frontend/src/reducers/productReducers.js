@@ -1,4 +1,4 @@
-export const listProductReducer = (state = { product: [] }, action) => {
+export const listProductReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case "PRODUCT_LIST_REQUEST":
       return { products: [], loading: true };
