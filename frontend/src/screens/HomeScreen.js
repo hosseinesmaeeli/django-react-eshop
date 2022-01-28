@@ -5,7 +5,8 @@ import { Row, Col } from "react-bootstrap"; //imd
 import Product from "../components/Product";
 // import axios from "axios";
 import { fetchProducts } from "../actions/productActions";
-import Loader from '../components/Loader'
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -28,9 +29,10 @@ function HomeScreen() {
   return (
     <div>
       <h1>Latest Products</h1>
-      {loading ? <Loader/>
-           : error ? (
-        <h2>{error}</h2>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger" text={error} />
       ) : (
         <Row>
           {products.map((product) => (
