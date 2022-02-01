@@ -3,19 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 // import products from "../products";
 import Rating from "../components/Rating";
 import { useParams, Link } from "react-router-dom";
-import { Container, Row, Col, Image, ListGroup, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Button,
+  Form,
+} from "react-bootstrap";
 // import axios from "axios";
 import { fetchProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 function ProductScreen() {
+  const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { error, loading, product } = productDetails;
+  const { id } = useParams();
   // const [product, setProduct] = useState([]);
   useEffect(() => {
     dispatch(fetchProductDetails(id));
+    console.log(qty);
     // async function fetchProduct() {
     //   const { data } = await axios.get(
     //     `/api/v1/products/${id}`
@@ -23,8 +34,8 @@ function ProductScreen() {
     //   setProduct(data);
     // }
     // fetchProduct();
-  }, []);
-  const { id } = useParams();
+  }, [dispatch, id, qty]);
+
   // const product = products.find((p) => p._id === id);
   return (
     <div>
@@ -71,6 +82,25 @@ function ProductScreen() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty:</Col>
+                      <Col>
+                        <Form.Select
+                          value={qty}
+                          onChange={(e) => setQty(e.target.value)}
+                        >
+                          {[...Array(product.countInStock).keys()].map((x) => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
               </ListGroup>
               <ListGroup.Item>
                 <Button
