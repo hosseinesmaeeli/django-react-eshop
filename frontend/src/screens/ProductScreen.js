@@ -17,16 +17,17 @@ import { fetchProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
-function ProductScreen() {
+function ProductScreen(history) {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { error, loading, product } = productDetails;
   const { id } = useParams();
+
   // const [product, setProduct] = useState([]);
   useEffect(() => {
     dispatch(fetchProductDetails(id));
-    console.log(qty);
+    // console.log(qty);
     // async function fetchProduct() {
     //   const { data } = await axios.get(
     //     `/api/v1/products/${id}`
@@ -35,7 +36,10 @@ function ProductScreen() {
     // }
     // fetchProduct();
   }, [dispatch, id, qty]);
-
+  const addToCartHandler = () => {
+    history.push(`/cart/${id}?qty=${qty}`);
+    // console.log('bbb');
+  };
   // const product = products.find((p) => p._id === id);
   return (
     <div>
@@ -104,12 +108,13 @@ function ProductScreen() {
               </ListGroup>
               <ListGroup.Item>
                 <Button
+                  onclick={addToCartHandler}
                   type="button"
                   className="btn-block"
                   disabled={product.countInStock === 0}
                 >
                   {" "}
-                  Add to Card
+                  Add to Cart
                 </Button>
               </ListGroup.Item>
             </Col>
