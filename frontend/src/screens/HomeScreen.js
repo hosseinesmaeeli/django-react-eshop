@@ -25,6 +25,7 @@ function HomeScreen() {
     //   }
     //   fetchProducts();
   }, [dispatch]);
+  
 
   return (
     <div>

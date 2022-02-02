@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import products from "../products";
 import Rating from "../components/Rating";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link,useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -17,16 +17,17 @@ import { fetchProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
-function ProductScreen(history) {
+function ProductScreen() {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { error, loading, product } = productDetails;
-  const { id } = useParams();
+  const params = useParams();
+  const navigate = useNavigate();
 
   // const [product, setProduct] = useState([]);
   useEffect(() => {
-    dispatch(fetchProductDetails(id));
+    dispatch(fetchProductDetails(params.id));
     // console.log(qty);
     // async function fetchProduct() {
     //   const { data } = await axios.get(
@@ -35,10 +36,10 @@ function ProductScreen(history) {
     //   setProduct(data);
     // }
     // fetchProduct();
-  }, [dispatch, id, qty]);
+  }, [dispatch, params.id, qty]);
   const addToCartHandler = () => {
-    history.push(`/cart/${id}?qty=${qty}`);
-    // console.log('bbb');
+    navigate(`/cart/${params.id}?qty=${qty}`);
+    console.log('bbb');
   };
   // const product = products.find((p) => p._id === id);
   return (
@@ -108,7 +109,7 @@ function ProductScreen(history) {
               </ListGroup>
               <ListGroup.Item>
                 <Button
-                  onclick={addToCartHandler}
+                  onClick={addToCartHandler}
                   type="button"
                   className="btn-block"
                   disabled={product.countInStock === 0}
