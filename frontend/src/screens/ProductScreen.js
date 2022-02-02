@@ -36,10 +36,9 @@ function ProductScreen() {
     //   setProduct(data);
     // }
     // fetchProduct();
-  }, [dispatch, params.id, qty]);
+  }, [dispatch, params.id]);
   const addToCartHandler = () => {
     navigate(`/cart/${params.id}?qty=${qty}`);
-    console.log('bbb');
   };
   // const product = products.find((p) => p._id === id);
   return (
