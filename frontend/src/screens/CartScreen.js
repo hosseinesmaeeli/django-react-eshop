@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams, useSearchParams, Link ,useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../actions/cartActions";
+import { addToCart , removeFromCart} from "../actions/cartActions";
 import {
   Row,
   Col,
@@ -32,6 +32,11 @@ function CartScreen() {
 const checkoutHandler = () => {
   navigate('/login?redirect=shipping') //if logined go to shipping page
 }
+const removeFromCartHandler = (id) => {
+// console.log(id)
+dispatch(removeFromCart(id));
+}  
+
   return (
     <Row>
       <Col md={8}>
@@ -71,6 +76,13 @@ const checkoutHandler = () => {
                       ))}
                     </Form.Select>
                   </Col>
+                  <Col md={1}>
+                    <Button type='button' variant='light'
+                    onClick={()=> removeFromCartHandler(item.product) }
+                    >
+                      <i className='fas fa-trash'></i>
+                    </Button>
+                  </Col>
                 </Row>
               </ListGroup.Item>
             ))}
@@ -82,7 +94,7 @@ const checkoutHandler = () => {
         <Card>
           <ListGroup>
             <ListGroup.Item>
-<h2>Subtotal ({cartItems.reduce(  (acc, item) => acc+ (item.qty) ,0 )}) items</h2>
+<h2>Subtotal ({cartItems.reduce(  (acc, item) => acc+ Number(item.qty) ,0 )}) items</h2>
 ${cartItems.reduce(  (acc, item) => acc+ (item.qty)*(item.price) ,0 ).toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
