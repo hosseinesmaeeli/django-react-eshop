@@ -10,6 +10,8 @@ from .serializers import ProductSerializer, UserSerializer,UserSerializerWithTok
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.hashers import make_password
+from rest_framework import status
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     # @classmethod
@@ -34,24 +36,22 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-
-routes =[
-    '/api/v1/products/',
-'/api/v1/products/create',
-
-'/api/v1/products/upload/',
-
-'/api/v1/products/<id>/reviews/',
-
-'/api/v1/products/top/',
-'/api/v1/products/<id>/',
-
-'/api/v1/products/delete/<id>/',
-'/api/v1/products/<update>/<id>/',
-
-]
-
-
+@api_view(['POST'])
+def registerUser(request):
+    data= request.data
+    # print('DATA :',data)
+    try :
+        user= User.objects.create(
+            first_name=data['name'],
+            username= data['email'],
+            email= data['email'],
+            password=make_password(data['password'])
+        )
+        serializer= UserSerializerWithToken(user, many=False)
+        return Response(serializer.data)
+    except: 
+        message={'detail' : 'User with this email already exist'}
+        return Response(message,status=status.HTTP_400_BAD_REQUEST)
 # Create your views here.
 @api_view(['GET'])
 def getRoutes(request):
