@@ -16,7 +16,7 @@ function Product({ product }) {
               <strong> {product.name} </strong>
             </Card.Title>
           </Link>
-          <Card.Text as="div" ClassName="my-3">
+          <Card.Text as="div" className="my-3">
             <Rating
               value={product.rating}
               text={`${product.numReviews} reviews`}
