@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
@@ -7,7 +7,8 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { register } from "../actions/userActions";
 
-export default function RegisterScreen({location}) {
+export default function RegisterScreen() {
+  const location = useLocation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +17,7 @@ export default function RegisterScreen({location}) {
 
   const dispatch = useDispatch();
 
-  const redirect = 'location.search ? location.search.split("=")[1] : "/"';
+  const redirect = location.search ? location.search.split("=")[1] : "/";
   const userRegister = useSelector((state) => state.userRegister);
   const { loading, error, userInfo } = userRegister;
   const navigate = useNavigate();

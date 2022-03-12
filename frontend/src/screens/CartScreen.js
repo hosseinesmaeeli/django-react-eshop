@@ -30,7 +30,7 @@ function CartScreen() {
     }
   }, [dispatch, productId, qty]);
 const checkoutHandler = () => {
-  navigate('/login?redirect=shipping') //if logined go to shipping page
+  navigate('/login?redirect=/shipping') //if logined go to shipping page
 }
 const removeFromCartHandler = (id) => {
 // console.log(id)
