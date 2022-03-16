@@ -4,9 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 import { Link, useNavigate } from "react-router-dom";
+import { createOrder } from '../actions/orderActions'
+import { ORDER_CREATE_RESET} from '../constants/orderConstants'
 
 function PlaceOrderScreen() {
+  const orderCreate= useSelector((state) => state.orderCreate)
+  const {order,error,success}= orderCreate
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate();
 
   cart.itemsPrice = cart.cartItems
     .reduce((acc, item) => acc + item.price * item.qty, 0)
@@ -19,9 +25,28 @@ function PlaceOrderScreen() {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
+  
+  if(!cart.paymentMethod) {
+    navigate('/payment')
+  }
 
+
+  useEffect(() => {
+    if(success){
+      navigate(`/order/${order._id}`)
+      dispatch({type: ORDER_CREATE_RESET})
+    }
+  },[success,navigate])
   const placeOrder = () => {
-    console.log("placeOrder");
+    dispatch(createOrder({
+      orderItems: cart.cartItems,
+      shippingAddress: cart.shippingAddress,
+      paymentMethod: cart.paymentMethod,
+      itemPrice: cart.itemPrice,
+      shippingPrice: cart.shippingPrice,
+      taxPrice: cart.taxPrice,
+      totalPrice: cart.totalPrice,
+    }));
   };
 
   return (
@@ -115,6 +140,11 @@ function PlaceOrderScreen() {
                   <Col>${cart.totalPrice} </Col>
                 </Row>
               </ListGroup.Item>
+
+              <ListGroup.Item>
+               {error && <Message variant="danger" text={error} />} 
+              </ListGroup.Item>         
+
 
               <ListGroup.Item>
                 <Button
