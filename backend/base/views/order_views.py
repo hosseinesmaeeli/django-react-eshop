@@ -76,7 +76,7 @@ def getOrderById(request, pk):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def addOrderItems(request,pk):
+def updateOrderToPaid(request,pk):
     order = Order.objects.get(_id=pk)
 
     order.isPaid = True
