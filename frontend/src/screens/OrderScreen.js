@@ -4,15 +4,23 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import { getOrderDetails } from "../actions/orderActions";
+import { getOrderDetails, payOrder } from "../actions/orderActions";
+import {PayPalButton} from 'react-paypal-button-v2'
+import {ORDER_PAY_RESET} from '../constants/orderConstants'
+
 
 function OrderScreen() {
+  const[ sdkReady,setSdkReady]= useState(false)
   const dispatch = useDispatch();
   const params = useParams();
   const orderId = params.id;
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
+
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading:loadingPay, success:successPay } = orderPay;
+
   const navigate = useNavigate();
 
   // console.log(orderId)
@@ -24,11 +32,33 @@ function OrderScreen() {
       .toFixed(2);
   }
 
-  useEffect(() => {
-    if (!order || order._id !== Number(orderId)) {
-      dispatch(getOrderDetails(orderId));
+  const addPayPalScript =() => {
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = 'https://www.paypal.com/sdk/js?client-id=AYQlUzSfD4vBad9LhKbSJJAoQ9Z0DFoSyXFfJ-uUg5RGIdWGsmL0AMlYevzQBhAFyXVZ7E_--20dZ1GR'
+    script.async= true
+    script.onload = () =>{
+      setSdkReady(true)
     }
-  }, [dispatch, order, orderId]);
+    document.body.appendChild(script)
+  }
+//AYQlUzSfD4vBad9LhKbSJJAoQ9Z0DFoSyXFfJ-uUg5RGIdWGsmL0AMlYevzQBhAFyXVZ7E_--20dZ1GR
+  useEffect(() => {
+    if (!order || successPay|| order._id !== Number(orderId)) {
+      dispatch({type: ORDER_PAY_RESET})
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if(!window.paypal) {
+        addPayPalScript()
+      } else {
+        setSdkReady(true)
+      }
+    }
+  }, [dispatch, order, orderId,successPay]);
+
+  const successPaymentHandler= (paymentResult) => {   
+    dispatch(payOrder(orderId, paymentResult))
+  }
 
   return loading ? (
     <Loader />
@@ -145,6 +175,23 @@ function OrderScreen() {
                   <Col>Total:</Col>
                   <Col>${order.totalPrice} </Col>
                 </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                    {!order.isPaid && (
+                      <ListGroup.Item>
+                        {loadingPay && <Loader/>}
+                        { !sdkReady ? (
+                            <Loader />
+                        ) : (
+                          <PayPalButton 
+                          amount= {order.totalPrice}
+                          onSuccess = { successPaymentHandler}
+                          />
+                        )}
+                      </ListGroup.Item>
+                    )}
+
               </ListGroup.Item>
             </ListGroup>
           </Card>
