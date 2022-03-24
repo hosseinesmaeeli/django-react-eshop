@@ -5,19 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { fetchProducts} from "../actions/productActions";
-import {  useParams, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 function ProductListScreen() { 
   const dispatch = useDispatch();
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const listProduct = useSelector((state) => state.listProduct);
+  const { loading,error,products } = listProduct;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo} = userLogin;
 
   const navigate = useNavigate();
-  const params = useParams();
-//   const productId = params.id;
+
 
   useEffect(() => {
     if(userInfo && userInfo.isAdmin){
@@ -40,12 +39,14 @@ function ProductListScreen() {
   return (
     <div>
       <Row className= 'align-items-center'>
-            <Col>
+            <Col md={4}>
             <h1>Products</h1>
-            </Col>     
-            <Col className='text-right'>
-                <Button className='my-3' onClick={createProductHandler}>
-                    <i className="fas fa-plus"></i>Create Product
+            </Col>
+
+  
+            <Col className='text-right' md={{ span: 3, offset: 5 }} >
+                <Button className='my-3'  onClick={createProductHandler}>
+                    <i className="fas fa-plus"></i> Create Product
                 </Button>
             </Col>
       </Row>

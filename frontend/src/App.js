@@ -38,7 +38,7 @@ function App() {
             <Route path="/order/:id" element={<OrderScreen />} />
             <Route path="/admin/userList" element={<UserListScreen />} />
             <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-            <Route path="/admin/productList" element={<ProductListScreen />} />
+            <Route path="/admin/productlist" element={<ProductListScreen />} />
 
           </Routes>
         </Container>

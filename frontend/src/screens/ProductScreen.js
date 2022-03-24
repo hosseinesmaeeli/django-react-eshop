@@ -88,17 +88,18 @@ function ProductScreen() {
                 </ListGroup.Item>
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
-                    <Row>
-                      <Col>Qty:</Col>
-                      <Col>
+                    <Row >
+                      <Col sm={4}>Qty:</Col>
+                      <Col sm={8}>
                         <Form.Select
                           value={qty}
                           onChange={(e) => setQty(e.target.value)}
                         >
                           {[...Array(product.countInStock).keys()].map((x) => (
                             <option key={x + 1} value={x + 1}>
-                              {x + 1}
+                              {x + 1} 
                             </option>
+                            
                           ))}
                         </Form.Select>
                       </Col>
