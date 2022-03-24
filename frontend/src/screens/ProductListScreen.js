@@ -9,7 +9,7 @@ import {useNavigate } from "react-router-dom";
 
 function ProductListScreen() { 
   const dispatch = useDispatch();
-  const listProduct = useSelector((state) => state.listProduct);
+  const listProduct = useSelector((state) => state.productList);
   const { loading,error,products } = listProduct;
 
   const userLogin = useSelector((state) => state.userLogin);
