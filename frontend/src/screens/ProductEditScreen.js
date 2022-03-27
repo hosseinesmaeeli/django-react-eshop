@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +9,7 @@ import Message from "../components/Message";
 import { fetchProductDetails, updateProduct } from "../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 
-export default function ProductEditScreen() {
+function ProductEditScreen() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("0");
   const [image, setImage] = useState("");
@@ -16,6 +17,7 @@ export default function ProductEditScreen() {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [description, setDescription] = useState("0");
+  const [uploading, setUploading] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -76,6 +78,30 @@ export default function ProductEditScreen() {
     );
   };
 
+  const uploadFileHandler = async (e) =>{
+      const file = e.target.files[0]
+      const formData= new FormData()
+
+      formData.append('image', file)
+      formData.append('product_id', productId)
+
+      setUploading(true)
+      try{
+        const config = {
+          headers:{ 
+            'Content-Type': "multipart/form-data"
+          }
+        }
+        const{data} =await axios.post(`/api/v1/products/upload/`,formData,config)
+        setImage(data)
+        setUploading(false)
+
+      }catch(error){
+        setUploading(false)
+
+      }
+  }
+
   return (
     <div>
       <Link to="/admin/productlist">Go Back</Link>
@@ -118,6 +144,13 @@ export default function ProductEditScreen() {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
+               <Form.Control type="file"
+                    id='image-file'
+                    Label='Choose File'
+                    custom
+                    onChange={uploadFileHandler} >
+                </Form.Control>
+                {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand" className="mb-2">
@@ -169,3 +202,5 @@ export default function ProductEditScreen() {
     </div>
   );
 }
+
+export default ProductEditScreen;
