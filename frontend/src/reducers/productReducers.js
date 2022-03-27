@@ -14,6 +14,11 @@ import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_RESET,
 
+  PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_RESET,
+
 
 } from "../constants/productConstants";
 
@@ -69,6 +74,22 @@ export const productCreateReducer = (state = {  },  action) => {
       return { error: action.payload, loading: false };
     case PRODUCT_CREATE_RESET:
       return { };
+    default:
+      return state;
+  }
+};
+
+export const productUpdateReducer = (state = { product:{} },  action) => {
+  //*in proshop we use ProductDetailsReducers
+  switch (action.type) {
+    case PRODUCT_UPDATE_REQUEST:
+      return { loading: true };
+    case PRODUCT_UPDATE_SUCCESS:
+      return { success: true, loading: false, product: action.payload };
+    case PRODUCT_UPDATE_FAIL:
+      return { error: action.payload, loading: false };
+    case PRODUCT_UPDATE_RESET:
+      return { product:{} };
     default:
       return state;
   }

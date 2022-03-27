@@ -8,7 +8,7 @@ import Message from "../components/Message";
 import { getUserDetails, updateUser } from "../actions/userActions";
 import { USER_UPDATE_RESET } from "../constants/userConstants";
 
-export default function EditUserScreen() {
+export default function UserEditScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -91,7 +91,7 @@ export default function EditUserScreen() {
               ></Form.Check>
             </Form.Group>
 
-            <Button type="submit" variant="primary" className="w-25 p-3 mb-2">
+            <Button type="submit" variant="primary" className="w-25 py-2 my-5">
               Update
             </Button>
           </Form>
