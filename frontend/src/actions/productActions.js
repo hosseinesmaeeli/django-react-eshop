@@ -21,10 +21,10 @@ import {
 } from "../constants/productConstants";
 import axios from "axios";
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = (keyword='') => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get("/api/v1/products/");
+    const { data } = await axios.get(`/api/v1/products${keyword}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,

@@ -7,15 +7,19 @@ import Product from "../components/Product";
 import { fetchProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import { useLocation } from "react-router-dom";
 
-function HomeScreen() {
+
+function HomeScreen({navigate}) {
   const dispatch = useDispatch();
   const listProducts = useSelector((state) => state.productList);
   const { error, loading, products } = listProducts;
-
+  const location = useLocation();
+  let keyword=  location.search;
+  console.log(keyword)
   // const [products, setProducts] = useState([]);
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(keyword));
 
     //   async function fetchProducts() {
     //     const { data } = await axios.get(
@@ -24,7 +28,7 @@ function HomeScreen() {
     //     setProducts(data);
     //   }
     //   fetchProducts();
-  }, [dispatch]);
+  }, [dispatch,keyword]);
   
 
   return (
