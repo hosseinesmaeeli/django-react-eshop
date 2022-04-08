@@ -7,16 +7,17 @@ import Product from "../components/Product";
 import { fetchProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Paginate from "../components/paginate";
 import { useLocation } from "react-router-dom";
 
 
 function HomeScreen({navigate}) {
   const dispatch = useDispatch();
   const listProducts = useSelector((state) => state.productList);
-  const { error, loading, products } = listProducts;
+  const { error, loading, products,page, pages} = listProducts;
   const location = useLocation();
   let keyword=  location.search;
-  console.log(keyword)
+  // console.log(keyword)
   // const [products, setProducts] = useState([]);
   useEffect(() => {
     dispatch(fetchProducts(keyword));
@@ -47,6 +48,8 @@ function HomeScreen({navigate}) {
           ))}
         </Row>
       )}
+      
+      <Paginate page={page} pages={pages} keyword={keyword} />
     </div>
   );
 }
