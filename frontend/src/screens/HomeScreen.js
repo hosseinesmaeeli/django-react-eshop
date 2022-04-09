@@ -8,6 +8,7 @@ import { fetchProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/paginate";
+import ProductCarousel from "../components/ProductCarousel";
 import { useLocation } from "react-router-dom";
 
 
@@ -31,9 +32,11 @@ function HomeScreen({navigate}) {
     //   fetchProducts();
   }, [dispatch,keyword]);
   
-
+  
   return (
     <div>
+      {!keyword && <ProductCarousel/> }
+      
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

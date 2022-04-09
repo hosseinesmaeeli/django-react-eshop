@@ -22,7 +22,7 @@ def getProducts(request):
     products = Product.objects.filter(name__icontains=query)
 
     page = query= request.query_params.get('page')
-    paginator = Paginator(products,2)
+    paginator = Paginator(products,5)
 
     try:
         products = paginator.page(page)
@@ -52,6 +52,12 @@ def getProduct(request, pk):
     product = Product.objects.get(_id=pk)
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getTopProducts(request):
+    products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)    
 
 
 @api_view(['DELETE'])
@@ -150,3 +156,4 @@ def createProductReview(request,pk):
         product.save()   
 
         return Response('Review Added')
+
